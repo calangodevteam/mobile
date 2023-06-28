@@ -3,7 +3,8 @@ import { darkTheme, defaultTheme } from './src/theme/Theme';
 import { PreferencesContext } from './src/contexts/ThemeContext';
 import { PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
-import AuthRoutes from './src/routes/AuthRoutes';
+import { AuthProvider } from './src/contexts/AuthContext';
+import Routes from './src/routes';
 
 const App = () => {
   const [isThemeDark, setIsThemeDark] = useState(false);
@@ -26,7 +27,9 @@ const App = () => {
     <PreferencesContext.Provider value={preferences}>
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
-          <AuthRoutes/>
+          <AuthProvider>
+            <Routes/>
+          </AuthProvider>
         </NavigationContainer>
       </PaperProvider>
     </PreferencesContext.Provider>

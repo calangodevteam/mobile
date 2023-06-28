@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Aluno } from '../@types/aluno';
 import { URL_CALANGO_API } from '@env';
 
-const axiosInstance = axios.create({ baseURL: URL_CALANGO_API });
+const axiosInstance = axios.create({ baseURL: URL_CALANGO_API});
 
 // Aluno
 
@@ -36,5 +36,14 @@ export const findUnidadesByInst = async (id:number) => {
 export const findCursosUnidade = async (id:number) => {
 
     const response = await axiosInstance.get(`/unidades/${id}/cursos`);
+    return response;
+};
+
+
+// Questionario
+
+export const findQuestionarios = async () => {
+
+    const response = await axiosInstance.get('/questionarios');
     return response;
 };

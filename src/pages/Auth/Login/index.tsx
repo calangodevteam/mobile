@@ -7,14 +7,18 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { SignIn } from '../../../services/FireBaseAuth';
 import { findAlunoByEmail } from '../../../services/ApiCalango';
 import { Text } from 'react-native-paper';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const Login = () => {
 
   const navigation = useNavigation();
+  const {signIn} = useAuth();
 
   const handleSignIn = () => {
       SignIn().then(({ user }) => {
-        findAlunoByEmail(user.email!).then(() => navigation.navigate('app'))
+        findAlunoByEmail(user.email!).then(response => {
+          signIn(response.data);
+        })
         .catch(error => {
           console.log('erro ao buscar aluno: ', error);
           navigation.navigate('cadastro');

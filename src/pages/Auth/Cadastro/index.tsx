@@ -9,7 +9,6 @@ import {
 } from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {AppTheme} from '../../../@types/theme';
 import Select from '../../../components/Select';
 import auth from '@react-native-firebase/auth';
@@ -18,13 +17,13 @@ import {createAluno, findCursosUnidade, findInstituicoes, findUnidadesByInst} fr
 import SnackBar from '../../../components/SnackBar';
 import { Instituicao } from '../../../@types/instituicao';
 import { CursosUnidade, Unidade } from '../../../@types/cursos_unidade';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const Cadastro = () => {
 
-  const navigation = useNavigation();
-
   const theme = useTheme<AppTheme>();
   const user = auth().currentUser;
+  const {signIn} = useAuth();
 
   const [instituicoes, setInstituicoes] = useState<Instituicao[]>([]);
   const [unidades, setUnidades] = useState<Unidade[]>([]);
@@ -88,12 +87,9 @@ const Cadastro = () => {
               endereco: { cep: data.code, estado: data.state, cidade: data.city, bairro: data.district, rua: data.address},
               cursosUnidade: {id: curso},
             })
-              .then(alunoCreated => {
-                console.log('Aluno criado: ', alunoCreated);
-                navigation.reset({
-                  index: 0,
-                  routes: [{name: 'app'}],
-                });
+              .then(response => {
+                console.log('Aluno criado: ', response.data);
+                signIn(response.data);
               })
               .catch(response => {
                 setMesage(response.message.includes('400') ? 'Email já em uso' : response.message);
