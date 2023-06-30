@@ -1,3 +1,4 @@
+import { Aluno } from './aluno';
 import { Questao } from './questao';
 import { TemasAreas } from './temasAreas';
 
@@ -14,9 +15,11 @@ export interface Questionario {
   dataCriacao: string;
 }
 
-export interface Resposta{
-  alunoId: number,
+export interface Resultado{
+  id?: number;
+  aluno: Aluno,
   questionario: Questionario,
-  qtd_acertos: number,
-  data_respondido: string,
+  inicio?: Date,
+  termino?: Date,
+  acertos: number,
 }

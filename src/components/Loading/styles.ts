@@ -4,12 +4,6 @@ export const styles = StyleSheet.create({
   container: {
     flex:1,
     alignItems:'center',
+    justifyContent:'center',
   },
-  userPerfil: {
-    marginTop:40,
-    alignItems:'center',
-  },
-  textPerfil : {
-    marginVertical: 20,
-    },
 });

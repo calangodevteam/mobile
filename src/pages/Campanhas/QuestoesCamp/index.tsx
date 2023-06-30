@@ -19,9 +19,12 @@ import {Questao} from '../../../@types/questao';
 import QuestaoOpcao from '../../../components/QuestaoOpcao';
 import QuestaoArtigo from '../../../components/QuestaoArtigo';
 import { AppTheme } from '../../../@types/theme';
+import { createResultado, updateResultado } from '../../../services/ApiCalango';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();
+  const {aluno} = useAuth();
   const navigation = useNavigation();
 
   const route = useRoute();
@@ -30,6 +33,8 @@ const QuestoesCamp = () => {
   const [index, setIndex] = useState(0);
 
   const [acertos, setAcertos] = useState(0);
+
+  const [idResultado, setIdResultado] = useState<number| null>();
 
   const [questAtual, setQuestAtual] = useState<Questao>(
     questionario.questoes[index],
@@ -41,6 +46,15 @@ const QuestoesCamp = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    createResultado({aluno:aluno!, questionario: questionario!, acertos:0}).then(response => {
+      setIdResultado(response.data.id);
+    }).catch(response => {
+      console.log('error:', response.message);
+      navigation.goBack();
+    });
+  }, []);
+
+  useEffect(() => {
     setQuestAtual(questionario.questoes[index]);
   }, [index]);
 
@@ -50,11 +64,15 @@ const QuestoesCamp = () => {
 
   const showDialog = () => setVisible(!visible);
 
-  const navigate = () => {
-    navigation.navigate('camp_resultado', {
-      acertos: acertos,
-      dificuldade: questionario.dificuldade,
-      qtdQuestoes: questionario.qtdQuestoes,
+  const handleFinishQuest = () => {
+    updateResultado({id: idResultado!,aluno:aluno!, questionario: questionario!, acertos:acertos}).then(() => {
+      navigation.navigate('camp_resultado', {
+        acertos: acertos,
+        dificuldade: questionario.dificuldade,
+        qtdQuestoes: questionario.qtdQuestoes,
+      });
+    }).catch(response => {
+      console.log('error:', response.message);
     });
   };
 
@@ -157,7 +175,7 @@ const QuestoesCamp = () => {
               icon={'arrow-right'}
               onPress={() => {
                 showDialog();
-                navigate();
+                handleFinishQuest();
               }}>
               Ir Para Resultados
             </Button>

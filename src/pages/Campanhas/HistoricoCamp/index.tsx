@@ -5,18 +5,32 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import ListEmpty from '../../../components/ListEmpty';
-import { respostaImpl } from '../../../utils/data';
 import { AppTheme } from '../../../@types/theme';
+import { Resultado } from '../../../@types/questionario';
+import { findResultadoByAluno } from '../../../services/ApiCalango';
+import { useAuth } from '../../../contexts/AuthContext';
+import Loading from '../../../components/Loading';
 
 const HistoricoCamp = () => {
 
   const theme = useTheme<AppTheme>();
+  const {aluno} = useAuth();
   const navigation = useNavigation();
 
+  const [resultados, setResultados] = useState<Resultado[]>([]);
+
   const [isExtended, setIsExtended] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsExtended(!isExtended);
+    findResultadoByAluno(aluno?.id!).then(response => {
+      console.log('response: ', response.data.content);
+      setResultados(response.data.content as Resultado[]);
+      setLoading(false);
+    }).catch(response => {
+      console.log('Error: ', response.message);
+    });
   }, []);
 
   const handleCampanha = () => {
@@ -27,10 +41,10 @@ const HistoricoCamp = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={respostaImpl}
+        data={resultados}
         keyExtractor={(resp) => resp.questionario.id.toString()}
         ListEmptyComponent={
-          <ListEmpty
+          resultados && loading === false ? (<ListEmpty
             title="Hístico de Campanha Vazio!"
             subTitle="Clique em iniciar campanha e se divirta!"
             icon={{
@@ -38,7 +52,7 @@ const HistoricoCamp = () => {
               size:80,
               color:theme.colors.onBackground,
             }}
-          />
+          />) : null
         }
         renderItem={({ item }) => (
           <Button
@@ -67,6 +81,7 @@ const HistoricoCamp = () => {
         iconMode={'dynamic'}
         style={styles.fab}
       />
+      {loading ? (<Loading/>) : null}
     </SafeAreaView>
   );
 };

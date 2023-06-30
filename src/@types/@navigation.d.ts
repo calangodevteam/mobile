@@ -1,6 +1,6 @@
-import { Questionario, Resultado } from './questionario';
+import { Questionario } from './questionario';
 
-export interface Resultado {
+export interface ResultadoNavigation {
   acertos: number,
   qtdQuestoes: number;
   dificuldade:string,
@@ -16,7 +16,7 @@ export declare global {
       camp_historico: undefined;
       camp_escolha: undefined;
       camp_questoes: Questionario;
-      camp_resultado: Resultado;
+      camp_resultado: ResultadoNavigation;
     }
   }
 }

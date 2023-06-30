@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { useState } from 'react';
 import {styles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Image} from 'react-native';
@@ -8,22 +8,27 @@ import { SignIn } from '../../../services/FireBaseAuth';
 import { findAlunoByEmail } from '../../../services/ApiCalango';
 import { Text } from 'react-native-paper';
 import { useAuth } from '../../../contexts/AuthContext';
+import Loading from '../../../components/Loading';
 
 const Login = () => {
 
   const navigation = useNavigation();
   const {signIn} = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = () => {
+      setLoading(true);
       SignIn().then(({ user }) => {
         findAlunoByEmail(user.email!).then(response => {
+          setLoading(false);
           signIn(response.data);
         })
         .catch(error => {
+          setLoading(false);
           console.log('erro ao buscar aluno: ', error);
           navigation.navigate('cadastro');
         });
-      }).catch(error => {console.log('error: ', error);});
+      }).catch(error => {console.log('error: ', error); setLoading(false);});
   };
 
   return (
@@ -36,6 +41,7 @@ const Login = () => {
         color={GoogleSigninButton.Color.Light}
         onPress={() => handleSignIn() }
       />
+      {loading ? (<Loading/>) : null}
     </SafeAreaView>
   );
 };

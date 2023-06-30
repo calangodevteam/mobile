@@ -12,7 +12,7 @@ import {ScrollView, View} from 'react-native';
 import {AppTheme} from '../../../@types/theme';
 import Select from '../../../components/Select';
 import auth from '@react-native-firebase/auth';
-import {findCep} from '../../../services/EnderecoApi';
+import {findCep} from '../../../services/ApiEndereco';
 import {createAluno, findCursosUnidade, findInstituicoes, findUnidadesByInst} from '../../../services/ApiCalango';
 import SnackBar from '../../../components/SnackBar';
 import { Instituicao } from '../../../@types/instituicao';

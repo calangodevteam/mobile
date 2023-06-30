@@ -6,7 +6,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {Image, View} from 'react-native';
 import {moedasGanhas} from '../../../utils/Pontuacao';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import {Resultado} from '../../../@types/@navigation';
+import {ResultadoNavigation} from '../../../@types/@navigation';
 import { AppTheme } from '../../../@types/theme';
 
 const ResultadoCamp = () => {
@@ -14,7 +14,7 @@ const ResultadoCamp = () => {
   const navigation = useNavigation();
 
   const route = useRoute();
-  const resultado = route.params as Resultado;
+  const resultado = route.params as ResultadoNavigation;
   const [showPercente, setShowPercente] = useState(false);
   const porcento = parseFloat(
     ((resultado.acertos / resultado.qtdQuestoes) * 100).toPrecision(2),
