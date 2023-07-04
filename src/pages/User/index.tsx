@@ -1,19 +1,21 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import {Avatar, Button, Switch, Text} from 'react-native-paper';
-import {PreferencesContext} from '../../contexts/ThemeContext';
 import UsuLevelCard from '../../components/UsuLevelCard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { SignOut } from '../../services/FireBaseAuth';
-import { useAuth } from '../../contexts/AuthContext';
 import { findPontuacaoByAluno } from '../../services/ApiCalango';
 import { Pontuacao } from '../../@types/aluno';
 import { View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '../../@types/reduxHooks';
+import { signOut } from '../../redux/authSlice';
+import { toggleTheme } from '../../redux/themeSlice';
 
 const User = () => {
 
-  const {signOut, aluno} = useAuth();
-  const {toggleTheme, isThemeDark} = useContext(PreferencesContext);
+  const aluno = useAppSelector((state) => state.auth.aluno);
+  const isThemeDark = useAppSelector(state => state.theme.isThemeDark);
+  const dispatch = useAppDispatch();
 
   const [pontuacao, setPontuacao] = useState<Pontuacao>();
 
@@ -35,12 +37,13 @@ const User = () => {
       {pontuacao ? (<UsuLevelCard pontuacao={pontuacao!} />) : null}
       <View style={{flexDirection:'row'}}>
       <Text>Tema: </Text>
-      <Switch color={'red'} value={isThemeDark} onValueChange={toggleTheme} />
+      <Switch color={'red'} value={isThemeDark} onValueChange={() => {dispatch(toggleTheme());}} />
       </View>
       <Button mode="contained" onPress={() =>
         SignOut().then(() => {
           console.log('SignOut with Google!');
           signOut();
+          dispatch(signOut());
       }).catch(error => {console.log('error signOut: ', error);})}
       >
         SignOut

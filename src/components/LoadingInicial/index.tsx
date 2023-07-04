@@ -12,7 +12,7 @@ const LoadingInicial = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container]}>
+      style={[styles.container,{backgroundColor:theme.colors.background}]}>
       <View style={[styles.view]}>
         <SvgXml xml={CalangoSvgXml} fill={theme.colors.primary}/>
         <Image style={[styles.image]} source={require('../../assets/logo300.png')} />

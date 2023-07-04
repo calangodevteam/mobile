@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import AppRoutes from './AppRoutes';
 import AuthRoutes from './AuthRoutes';
 import LoadingInicial from '../components/LoadingInicial';
+import { useAppSelector } from '../@types/reduxHooks';
 
 
 const Routes = () => {
-    const {signed, loading} = useAuth();
+    const signed = useAppSelector((state) => state.auth.signed);
     const [loadingGoogle, setLoadingGoogle] = useState<boolean>(true);
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
@@ -21,7 +21,7 @@ const Routes = () => {
         });
       }, []);
 
-    if (loading || loadingGoogle){
+    if (loadingGoogle){
         return <LoadingInicial/>;
     }
 

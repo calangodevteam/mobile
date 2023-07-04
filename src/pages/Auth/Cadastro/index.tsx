@@ -17,13 +17,14 @@ import {createAluno, findCursosUnidade, findInstituicoes, findUnidadesByInst} fr
 import SnackBar from '../../../components/SnackBar';
 import { Instituicao } from '../../../@types/instituicao';
 import { CursosUnidade, Unidade } from '../../../@types/cursos_unidade';
-import { useAuth } from '../../../contexts/AuthContext';
+import { signIn } from '../../../redux/authSlice';
+import { useAppDispatch } from '../../../@types/reduxHooks';
 
 const Cadastro = () => {
 
   const theme = useTheme<AppTheme>();
   const user = auth().currentUser;
-  const {signIn} = useAuth();
+  const dispatch = useAppDispatch();
 
   const [instituicoes, setInstituicoes] = useState<Instituicao[]>([]);
   const [unidades, setUnidades] = useState<Unidade[]>([]);
@@ -89,7 +90,7 @@ const Cadastro = () => {
             })
               .then(response => {
                 console.log('Aluno criado: ', response.data);
-                signIn(response.data);
+                dispatch(signIn({ aluno: response.data }));
               })
               .catch(response => {
                 setMesage(response.message.includes('400') ? 'Email já em uso' : response.message);

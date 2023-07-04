@@ -7,13 +7,14 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { SignIn } from '../../../services/FireBaseAuth';
 import { findAlunoByEmail } from '../../../services/ApiCalango';
 import { Text } from 'react-native-paper';
-import { useAuth } from '../../../contexts/AuthContext';
 import Loading from '../../../components/Loading';
+import { signIn } from '../../../redux/authSlice';
+import { useAppDispatch } from '../../../@types/reduxHooks';
 
 const Login = () => {
 
   const navigation = useNavigation();
-  const {signIn} = useAuth();
+  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = () => {
@@ -21,7 +22,7 @@ const Login = () => {
       SignIn().then(({ user }) => {
         findAlunoByEmail(user.email!).then(response => {
           setLoading(false);
-          signIn(response.data);
+          dispatch(signIn({ aluno: response.data }));
         })
         .catch(error => {
           setLoading(false);

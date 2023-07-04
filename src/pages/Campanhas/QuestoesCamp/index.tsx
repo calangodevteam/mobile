@@ -20,11 +20,11 @@ import QuestaoOpcao from '../../../components/QuestaoOpcao';
 import QuestaoArtigo from '../../../components/QuestaoArtigo';
 import { AppTheme } from '../../../@types/theme';
 import { createResultado, updateResultado } from '../../../services/ApiCalango';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAppSelector } from '../../../@types/reduxHooks';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();
-  const {aluno} = useAuth();
+  const aluno = useAppSelector((state) => state.auth.aluno);
   const navigation = useNavigation();
 
   const route = useRoute();

@@ -15,7 +15,9 @@ const ResultadoCamp = () => {
 
   const route = useRoute();
   const resultado = route.params as ResultadoNavigation;
+
   const [showPercente, setShowPercente] = useState(false);
+
   const porcento = parseFloat(
     ((resultado.acertos / resultado.qtdQuestoes) * 100).toPrecision(2),
   );

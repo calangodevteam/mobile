@@ -8,13 +8,13 @@ import ListEmpty from '../../../components/ListEmpty';
 import { AppTheme } from '../../../@types/theme';
 import { Resultado } from '../../../@types/questionario';
 import { findResultadoByAluno } from '../../../services/ApiCalango';
-import { useAuth } from '../../../contexts/AuthContext';
 import Loading from '../../../components/Loading';
+import { useAppSelector } from '../../../@types/reduxHooks';
 
 const HistoricoCamp = () => {
 
   const theme = useTheme<AppTheme>();
-  const {aluno} = useAuth();
+  const aluno = useAppSelector((state) => state.auth.aluno);
   const navigation = useNavigation();
 
   const [resultados, setResultados] = useState<Resultado[]>([]);
