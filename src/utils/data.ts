@@ -2,6 +2,7 @@ import { CursosUnidade, Unidade } from '../@types/cursos_unidade';
 import { Instituicao } from '../@types/instituicao';
 import { Questionario, Resposta } from '../@types/questionario';
 import { Modalidade } from '../@types/enums';
+
 export interface Aluno{
   id: number,
   nome: string,

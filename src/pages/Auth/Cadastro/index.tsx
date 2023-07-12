@@ -13,8 +13,11 @@ import {AppTheme} from '../../../@types/theme';
 import Select from '../../../components/Select';
 import auth from '@react-native-firebase/auth';
 import {findCep} from '../../../services/ApiEndereco';
+
 import {createAluno, findCursosUnidade, findInstituicoes, findUnidadesByInst} from '../../../services/ApiCalango';
+
 import SnackBar from '../../../components/SnackBar';
+
 import { Instituicao } from '../../../@types/instituicao';
 import { CursosUnidade, Unidade } from '../../../@types/cursos_unidade';
 import { signIn } from '../../../redux/authSlice';
@@ -105,6 +108,7 @@ const Cadastro = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -121,6 +125,7 @@ const Cadastro = () => {
                 : require('../../../assets/avatar.png')
             }
           />
+      
           <Text variant="titleMedium">Bem vindo(a)! {user?.displayName}</Text>
         </View>
 

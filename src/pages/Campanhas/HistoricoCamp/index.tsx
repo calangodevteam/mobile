@@ -1,22 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
-import {AnimatedFAB, Button, useTheme} from 'react-native-paper';
+import {AnimatedFAB, Button, useTheme, Avatar} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { FlatList } from 'react-native';
+import { FlatList, ScrollView, View } from 'react-native';
 import ListEmpty from '../../../components/ListEmpty';
 import { AppTheme } from '../../../@types/theme';
 import { Resultado } from '../../../@types/questionario';
 import { findResultadoByAluno } from '../../../services/ApiCalango';
+
 import Loading from '../../../components/Loading';
+import auth from '@react-native-firebase/auth';
 import { useAppSelector } from '../../../@types/reduxHooks';
 
+
+
+//essa screen esta fazendo a importação da imagem do usuario para tela de historico ,conforme os prototipos do figma
 const HistoricoCamp = () => {
 
   const theme = useTheme<AppTheme>();
   const aluno = useAppSelector((state) => state.auth.aluno);
   const navigation = useNavigation();
-
+  const user = auth().currentUser;
   const [resultados, setResultados] = useState<Resultado[]>([]);
 
   const [isExtended, setIsExtended] = useState(false);
@@ -38,7 +43,41 @@ const HistoricoCamp = () => {
   };
 
   return (
+    
     <SafeAreaView style={styles.container}>
+    
+       
+    <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="none">
+        <View style={styles.containerImage}>
+          <Avatar.Image
+            style={styles.image}
+            size={120}
+            source={
+              user
+                ? {
+                    uri: user.photoURL,
+                  }
+                : require('../../../assets/avatar.png')
+            }
+          />
+        </View>
+   </ScrollView>
+   
+   <AnimatedFAB
+        variant="primary"
+        icon={'plus'}
+        label={'Iniciar Campanha'}
+        extended={isExtended}
+        onPress={handleCampanha}
+        animateFrom={'right'}
+        iconMode={'dynamic'}
+        style={styles.fab}
+      />     
+
+    
       <FlatList
         showsVerticalScrollIndicator={false}
         data={resultados}
@@ -71,16 +110,7 @@ const HistoricoCamp = () => {
         </Button>
         )}
       />
-      <AnimatedFAB
-        variant="primary"
-        icon={'plus'}
-        label={'Iniciar Campanha'}
-        extended={isExtended}
-        onPress={handleCampanha}
-        animateFrom={'right'}
-        iconMode={'dynamic'}
-        style={styles.fab}
-      />
+    
       {loading ? (<Loading/>) : null}
     </SafeAreaView>
   );

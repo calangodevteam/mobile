@@ -31,8 +31,11 @@ const User = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userPerfil}>
+
         <Avatar.Image size={96} source={{uri:aluno?.fotoPerfil}} />
+
         <Text variant="headlineMedium" style={styles.textPerfil}>{aluno?.nome}</Text>
+
       </View>
       {pontuacao ? (<UsuLevelCard pontuacao={pontuacao!} />) : null}
       <View style={{flexDirection:'row'}}>
