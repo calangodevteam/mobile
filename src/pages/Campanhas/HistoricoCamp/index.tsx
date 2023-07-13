@@ -5,11 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import ListEmpty from '../../../components/ListEmpty';
-import { AppTheme } from '../../../@types/theme';
-import { Resultado } from '../../../@types/questionario';
+import { AppTheme } from '../../../types/theme';
+import { Resultado } from '../../../types/questionario';
 import { findResultadoByAluno } from '../../../services/ApiCalango';
 import Loading from '../../../components/Loading';
-import { useAppSelector } from '../../../@types/reduxHooks';
+import { useAppSelector } from '../../../types/reduxHooks';
 
 const HistoricoCamp = () => {
 

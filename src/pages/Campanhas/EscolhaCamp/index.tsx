@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import ModalQuestionario from '../../../components/ModalQuestionario';
 import ListEmpty from '../../../components/ListEmpty';
-import { Questionario } from '../../../@types/questionario';
-import { AppTheme } from '../../../@types/theme';
+import { Questionario } from '../../../types/questionario';
+import { AppTheme } from '../../../types/theme';
 import { findQuestionarios } from '../../../services/ApiCalango';
 import Loading from '../../../components/Loading';
 

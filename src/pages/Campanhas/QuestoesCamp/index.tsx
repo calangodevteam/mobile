@@ -13,14 +13,14 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Questionario} from '../../../@types/questionario';
+import {Questionario} from '../../../types/questionario';
 import {Image, ScrollView, View} from 'react-native';
-import {Questao} from '../../../@types/questao';
+import {Questao} from '../../../types/questao';
 import QuestaoOpcao from '../../../components/QuestaoOpcao';
 import QuestaoArtigo from '../../../components/QuestaoArtigo';
-import { AppTheme } from '../../../@types/theme';
+import { AppTheme } from '../../../types/theme';
 import { createResultado, updateResultado } from '../../../services/ApiCalango';
-import { useAppSelector } from '../../../@types/reduxHooks';
+import { useAppSelector } from '../../../types/reduxHooks';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();

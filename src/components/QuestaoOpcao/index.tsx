@@ -3,8 +3,8 @@ import {View} from 'react-native';
 
 import {styles} from './styles';
 import {RadioButton, useTheme} from 'react-native-paper';
-import { Opcao } from '../../@types/questao';
-import { AppTheme } from '../../@types/theme';
+import { Opcao } from '../../types/questao';
+import { AppTheme } from '../../types/theme';
 
 interface props {
   opcao: Opcao

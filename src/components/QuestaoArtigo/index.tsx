@@ -3,7 +3,7 @@ import {Linking} from 'react-native';
 
 import {styles} from './styles';
 import {List} from 'react-native-paper';
-import {Artigo} from '../../@types/questao';
+import {Artigo} from '../../types/questao';
 
 interface props {
   artigo: Artigo;

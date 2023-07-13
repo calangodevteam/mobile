@@ -6,8 +6,8 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {Image, View} from 'react-native';
 import {moedasGanhas} from '../../../utils/Pontuacao';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import {ResultadoNavigation} from '../../../@types/@navigation';
-import { AppTheme } from '../../../@types/theme';
+import {ResultadoNavigation} from '../../../types/@navigation';
+import { AppTheme } from '../../../types/theme';
 
 const ResultadoCamp = () => {
   const theme = useTheme<AppTheme>();

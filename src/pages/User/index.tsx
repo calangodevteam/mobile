@@ -5,9 +5,9 @@ import UsuLevelCard from '../../components/UsuLevelCard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { SignOut } from '../../services/FireBaseAuth';
 import { findPontuacaoByAluno } from '../../services/ApiCalango';
-import { Pontuacao } from '../../@types/aluno';
+import { Pontuacao } from '../../types/aluno';
 import { View } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../@types/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../types/reduxHooks';
 import { signOut } from '../../redux/authSlice';
 import { toggleTheme } from '../../redux/themeSlice';
 

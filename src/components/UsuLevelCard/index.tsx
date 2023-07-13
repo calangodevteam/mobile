@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { styles } from './styles';
 import { Badge, Button, ProgressBar, Text, useTheme } from 'react-native-paper';
-import { AppTheme } from '../../@types/theme';
-import { Pontuacao } from '../../@types/aluno';
+import { AppTheme } from '../../types/theme';
+import { Pontuacao } from '../../types/aluno';
 
 interface props {
   pontuacao: Pontuacao

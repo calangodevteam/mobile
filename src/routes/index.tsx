@@ -3,7 +3,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import AppRoutes from './AppRoutes';
 import AuthRoutes from './AuthRoutes';
 import LoadingInicial from '../components/LoadingInicial';
-import { useAppSelector } from '../@types/reduxHooks';
+import { useAppSelector } from '../types/reduxHooks';
 
 
 const Routes = () => {

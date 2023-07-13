@@ -9,16 +9,16 @@ import {
 } from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, View} from 'react-native';
-import {AppTheme} from '../../../@types/theme';
+import {AppTheme} from '../../../types/theme';
 import Select from '../../../components/Select';
 import auth from '@react-native-firebase/auth';
 import {findCep} from '../../../services/ApiEndereco';
 import {createAluno, findCursosUnidade, findInstituicoes, findUnidadesByInst} from '../../../services/ApiCalango';
 import SnackBar from '../../../components/SnackBar';
-import { Instituicao } from '../../../@types/instituicao';
-import { CursosUnidade, Unidade } from '../../../@types/cursos_unidade';
+import { Instituicao } from '../../../types/instituicao';
+import { CursosUnidade, Unidade } from '../../../types/cursos_unidade';
 import { signIn } from '../../../redux/authSlice';
-import { useAppDispatch } from '../../../@types/reduxHooks';
+import { useAppDispatch } from '../../../types/reduxHooks';
 
 const Cadastro = () => {
 

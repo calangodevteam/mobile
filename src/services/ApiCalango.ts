@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Aluno } from '../@types/aluno';
+import { Aluno } from '../types/aluno';
 import { URL_CALANGO_API } from '@env';
-import { Resultado } from '../@types/questionario';
+import { Resultado } from '../types/questionario';
 
 const axiosInstance = axios.create({ baseURL: URL_CALANGO_API});
 

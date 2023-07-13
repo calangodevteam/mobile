@@ -11,7 +11,7 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import {AppTheme} from '../../@types/theme';
+import {AppTheme} from '../../types/theme';
 
 interface props {
   titleLabel: string;

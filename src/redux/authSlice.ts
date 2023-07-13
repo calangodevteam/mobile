@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Aluno } from '../@types/aluno';
+import { Aluno } from '../types/aluno';
 
 interface AuthSliceData {
     signed: boolean,

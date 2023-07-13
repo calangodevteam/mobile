@@ -6,7 +6,7 @@ import Routes from './src/routes';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
-import {useAppSelector} from './src/@types/reduxHooks';
+import {useAppSelector} from './src/types/reduxHooks';
 
 const Main = () => {
   const isThemeDark = useAppSelector(state => state.theme.isThemeDark);

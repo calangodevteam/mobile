@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Portal, useTheme } from 'react-native-paper';
-import { AppTheme } from '../../@types/theme';
+import { AppTheme } from '../../types/theme';
 import { styles } from './styles';
 
 const Loading = () => {

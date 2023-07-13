@@ -2,7 +2,7 @@ import React from 'react';
 import {styles} from './styles';
 import {Text, useTheme} from 'react-native-paper';
 import {Image, SafeAreaView, View} from 'react-native';
-import { AppTheme } from '../../@types/theme';
+import { AppTheme } from '../../types/theme';
 import { SvgXml } from 'react-native-svg';
 import { CalangoSvgXml } from '../../assets/xml/CalangoSvg';
 

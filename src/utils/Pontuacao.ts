@@ -1,18 +1,18 @@
 const pontuacao = [
     {
         nome:'Fácil',
-        moedas:3,
+        moedas:6,
         exp: 100,
     },
     {
         nome:'Mediano',
-        moedas:5,
-        exp: 300,
+        moedas:8,
+        exp: 200,
     },
     {
         nome:'Difícil',
-        moedas:8,
-        exp: 500,
+        moedas:12,
+        exp: 400,
     },
 ];
 

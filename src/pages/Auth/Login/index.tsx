@@ -9,7 +9,7 @@ import { findAlunoByEmail } from '../../../services/ApiCalango';
 import { Text } from 'react-native-paper';
 import Loading from '../../../components/Loading';
 import { signIn } from '../../../redux/authSlice';
-import { useAppDispatch } from '../../../@types/reduxHooks';
+import { useAppDispatch } from '../../../types/reduxHooks';
 
 const Login = () => {
 
