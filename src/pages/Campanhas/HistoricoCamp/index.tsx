@@ -6,32 +6,32 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import ListEmpty from '../../../components/ListEmpty';
 import { AppTheme } from '../../../types/theme';
-import { Resultado } from '../../../types/questionario';
-import { findResultadoByAluno } from '../../../services/ApiCalango';
 import Loading from '../../../components/Loading';
-import { useAppSelector } from '../../../types/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
+import { fetchResult } from '../../../redux/resultadoSlice';
 
 const HistoricoCamp = () => {
 
   const theme = useTheme<AppTheme>();
+  const dispatch = useAppDispatch();
+
   const aluno = useAppSelector((state) => state.auth.aluno);
+  const loading = useAppSelector((state) => state.result.loading);
+  const error = useAppSelector((state) => state.result.error);
+  const resultados = useAppSelector((state) => state.result.resultados);
+
   const navigation = useNavigation();
 
-  const [resultados, setResultados] = useState<Resultado[]>([]);
-
   const [isExtended, setIsExtended] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setIsExtended(!isExtended);
-    findResultadoByAluno(aluno?.id!).then(response => {
-      console.log('response: ', response.data.content);
-      setResultados(response.data.content as Resultado[]);
-      setLoading(false);
-    }).catch(response => {
-      console.log('Error: ', response.message);
-    });
+    setIsExtended(true);
+    dispatch(fetchResult(aluno?.id!));
   }, []);
+
+  if (!loading && error !== ''){
+    console.log('Error: ', error);
+  }
 
   const handleCampanha = () => {
     navigation.navigate('camp_escolha');

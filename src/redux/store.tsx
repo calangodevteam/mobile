@@ -3,6 +3,8 @@ import authSlice from './authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist';
 import themeSlice from './themeSlice';
+import campanhaSlice from './campanhaSlice';
+import resultadoSlice from './resultadoSlice';
 
 const persistConfig = {
     key: 'root',
@@ -14,6 +16,8 @@ const persistedThemeReducer = persistReducer(persistConfig, themeSlice);
 
 const store = configureStore({
   reducer: {
+    campanha: campanhaSlice,
+    result: resultadoSlice,
     auth: persistedAuthReducer,
     theme: persistedThemeReducer,
   },

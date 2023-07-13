@@ -20,11 +20,13 @@ import QuestaoOpcao from '../../../components/QuestaoOpcao';
 import QuestaoArtigo from '../../../components/QuestaoArtigo';
 import { AppTheme } from '../../../types/theme';
 import { createResultado, updateResultado } from '../../../services/ApiCalango';
-import { useAppSelector } from '../../../types/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
+import { fetchResult } from '../../../redux/resultadoSlice';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();
   const aluno = useAppSelector((state) => state.auth.aluno);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   const route = useRoute();
@@ -48,6 +50,8 @@ const QuestoesCamp = () => {
   useEffect(() => {
     createResultado({aluno:aluno!, questionario: questionario!, acertos:0}).then(response => {
       setIdResultado(response.data.id);
+    }).then(() => {
+      dispatch(fetchResult(aluno?.id!));
     }).catch(response => {
       console.log('error:', response.message);
       navigation.goBack();

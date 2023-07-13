@@ -8,29 +8,32 @@ import ModalQuestionario from '../../../components/ModalQuestionario';
 import ListEmpty from '../../../components/ListEmpty';
 import { Questionario } from '../../../types/questionario';
 import { AppTheme } from '../../../types/theme';
-import { findQuestionarios } from '../../../services/ApiCalango';
 import Loading from '../../../components/Loading';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
+import { fetchCamp } from '../../../redux/campanhaSlice';
 
 const EscolhaCamp = () => {
 
   const theme = useTheme<AppTheme>();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+
+  const aluno = useAppSelector((state) => state.auth.aluno);
+  const loading = useAppSelector((state) => state.campanha.loading);
+  const error = useAppSelector((state) => state.campanha.error);
+  const campanhas = useAppSelector((state) => state.campanha.campanhas);
 
   const [visible, setVisible] = useState(false);
-  const [campanhas, setCampanhas] = useState<Questionario[]>([]);
   const [campanha, setCampanha] = useState<Questionario>();
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    findQuestionarios().then((response) => {
-      console.log('reposta: ', response.data.elementos);
-      setCampanhas(response.data.elementos);
-      setLoading(false);
-    }).catch(response => {
-      console.log('error: ', response);
-    });
-  }, []);
+    dispatch(fetchCamp(aluno?.id!));
+  }, [aluno, dispatch]);
+
+  if (!loading && error !== ''){
+    console.log('Error: ', error);
+  }
+
 
   const handleConfirm = () => {
     showModal();

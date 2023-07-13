@@ -49,6 +49,13 @@ export const findQuestionarios = async () => {
     return response;
 };
 
+export const findQuestionariosNotAluno = async (alunoId:number) => {
+
+    const response = await axiosInstance.get(`/questionarios/page?alunoid=${alunoId}`);
+    console.log('api: ', response.data);
+    return response;
+};
+
 // Resultado
 
 export const findResultadoByAluno = async (alunoId:number) => {
