@@ -19,9 +19,14 @@ export const fetchResult = createAsyncThunk(
   async (alunoId: number) => {
     try {
       const res = await findResultadoByAluno(alunoId);
-      const content = await res.data.content;
+      const data = await res.data;
 
-      return content as Resultado[];
+      if (res.data.empty){
+        return null;
+      }
+      else {
+        return data.content as Resultado[];
+      }
 
     } catch (error: any) {
       throw new Error('Erro ao obter dados: ' + error.message);

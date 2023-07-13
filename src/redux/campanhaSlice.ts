@@ -21,8 +21,12 @@ export const fetchCamp = createAsyncThunk(
       const res = await findQuestionariosNotAluno(alunoId);
     const data = res.data;
 
-    return data.content as Questionario[];
-
+    if (res.data.empty){
+      return null;
+    }
+    else {
+      return data.content as Questionario[];
+    }
     } catch (error: any) {
       throw new Error('Erro ao obter dados: ' + error.message);
     }

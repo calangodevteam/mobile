@@ -44,7 +44,7 @@ const HistoricoCamp = () => {
         data={resultados}
         keyExtractor={(resp) => resp.questionario.id.toString()}
         ListEmptyComponent={
-          resultados && loading === false ? (<ListEmpty
+          !resultados && loading === false ? (<ListEmpty
             title="Hístico de Campanha Vazio!"
             subTitle="Clique em iniciar campanha e se divirta!"
             icon={{

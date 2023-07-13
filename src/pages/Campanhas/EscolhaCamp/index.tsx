@@ -51,7 +51,7 @@ const EscolhaCamp = () => {
         refreshing={loading}
         keyExtractor={(camp) => camp.id!.toString()}
         ListEmptyComponent={
-          campanhas && loading === false ? (<ListEmpty
+          !campanhas && loading === false ? (<ListEmpty
             title="Não há campanhas no momento."
             subTitle="Tente voltar mais tarde!"
             icon={{

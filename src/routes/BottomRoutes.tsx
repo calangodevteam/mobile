@@ -10,10 +10,10 @@ const BottomRoutes = () => {
     const [index, setIndex] = useState(0);
 
     const [routes] = useState([
-      { key: 'campanhas',title: 'Campanhas', focusedIcon: 'book-edit-outline', unfocusedIcon: 'book-edit' },
-      { key: 'ranking', title: 'Ranking', focusedIcon: 'podium-gold', unfocusedIcon: 'podium' },
-      { key: 'notificacao', title: 'Notificação', focusedIcon: 'bell-outline', unfocusedIcon: 'bell' },
-      { key: 'user', title: 'Usuário', focusedIcon: 'account-outline', unfocusedIcon: 'account' },
+      { key: 'campanhas',title: 'Campanhas', focusedIcon: 'book-edit'},
+      { key: 'ranking', title: 'Ranking', focusedIcon: 'podium'},
+      { key: 'notificacao', title: 'Notificação', focusedIcon: 'bell'},
+      { key: 'user', title: 'Usuário', focusedIcon: 'account'},
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
