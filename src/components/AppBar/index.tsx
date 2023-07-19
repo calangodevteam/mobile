@@ -22,7 +22,7 @@ const AppBar = ({title, dots, goBack}: props) => {
   return (
     <Appbar.Header elevated>
       {goBack ? <Appbar.BackAction onPress={goBack} /> : null}
-      <Appbar.Content title={title} />
+      <Appbar.Content title={title}/>
       {dots ? (
         <Menu
           visible={visible}
@@ -30,9 +30,7 @@ const AppBar = ({title, dots, goBack}: props) => {
           anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}
           anchorPosition="bottom">
           {dots.map((item) => (
-            <>
-            <Menu.Item key={item.id} title={item.title} onPress={item.action} />
-            </>
+            <Menu.Item  key={item.id} title={item.title} onPress={item.action} />
           ))}
         </Menu>
       ) : null}

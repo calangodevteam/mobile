@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Aluno } from '../types/aluno';
 import { URL_CALANGO_API } from '@env';
 import { Resultado } from '../types/questionario';
+import { Resposta } from '../types/resposta';
 
 const axiosInstance = axios.create({ baseURL: URL_CALANGO_API});
 
@@ -75,10 +76,24 @@ export const updateResultado = async (resultado: Resultado) => {
     return response;
 };
 
+// Resposta
+
+export const createRespostaEmMassa = async (respostas: Resposta[]) => {
+
+    const response = await axiosInstance.post('/questionarios/respostas', respostas);
+    return response;
+};
+
 // Pontuação
 
 export const findPontuacaoByAluno = async (alunoId:number) => {
 
     const response = await axiosInstance.get(`/alunos/${alunoId}/pontuacao`);
+    return response;
+};
+
+export const findAllPontuacoes = async () => {
+
+    const response = await axiosInstance.get('/pontuacoes');
     return response;
 };

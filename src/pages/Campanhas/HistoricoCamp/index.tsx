@@ -9,6 +9,7 @@ import { AppTheme } from '../../../types/theme';
 import Loading from '../../../components/Loading';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
 import { fetchResult } from '../../../redux/resultadoSlice';
+import AppBar from '../../../components/AppBar';
 
 const HistoricoCamp = () => {
 
@@ -39,6 +40,9 @@ const HistoricoCamp = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <AppBar
+        title="Histórico de Campanhas"
+      />
       <FlatList
         showsVerticalScrollIndicator={false}
         data={resultados}

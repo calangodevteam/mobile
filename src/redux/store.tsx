@@ -5,6 +5,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, pers
 import themeSlice from './themeSlice';
 import campanhaSlice from './campanhaSlice';
 import resultadoSlice from './resultadoSlice';
+import pontuacaoSlice from './pontuacaoSlice';
 
 const persistConfig = {
     key: 'root',
@@ -13,11 +14,13 @@ const persistConfig = {
 
 const persistedAuthReducer = persistReducer(persistConfig, authSlice);
 const persistedThemeReducer = persistReducer(persistConfig, themeSlice);
+const persistedResultReducer = persistReducer(persistConfig, resultadoSlice);
 
 const store = configureStore({
   reducer: {
     campanha: campanhaSlice,
-    result: resultadoSlice,
+    pontuacao: pontuacaoSlice,
+    result: persistedResultReducer,
     auth: persistedAuthReducer,
     theme: persistedThemeReducer,
   },

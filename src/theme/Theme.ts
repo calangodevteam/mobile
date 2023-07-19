@@ -26,6 +26,9 @@ export const defaultTheme = {
     warning:'#fae62e',
     errorLight:'#ff0000',
     scoreColor:'#F3B14E',
+    scoreColorBronze:'#cd7f32',
+    scoreColorPrata:'#c0c0c0',
+    scoreColorOuro:'#ffd700',
   },
 
 };
@@ -42,5 +45,8 @@ export const darkTheme = {
     warning:'#fae62e',
     errorLight:'#ff0000',
     scoreColor:'#F3B14E',
+    scoreColorBronze:'#cd7f32',
+    scoreColorPrata:'#c0c0c0',
+    scoreColorOuro:'#ffd700',
   },
 };

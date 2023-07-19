@@ -18,14 +18,15 @@ import {Image, ScrollView, View} from 'react-native';
 import {Questao} from '../../../types/questao';
 import QuestaoOpcao from '../../../components/QuestaoOpcao';
 import QuestaoArtigo from '../../../components/QuestaoArtigo';
-import { AppTheme } from '../../../types/theme';
-import { createResultado, updateResultado } from '../../../services/ApiCalango';
-import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
-import { fetchResult } from '../../../redux/resultadoSlice';
+import {AppTheme} from '../../../types/theme';
+import {createRespostaEmMassa, createResultado, updateResultado} from '../../../services/ApiCalango';
+import {useAppDispatch, useAppSelector} from '../../../types/reduxHooks';
+import {fetchResult} from '../../../redux/resultadoSlice';
+import {Resposta} from '../../../types/resposta';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();
-  const aluno = useAppSelector((state) => state.auth.aluno);
+  const aluno = useAppSelector(state => state.auth.aluno);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
@@ -34,9 +35,11 @@ const QuestoesCamp = () => {
 
   const [index, setIndex] = useState(0);
 
+  const [respostas, setRespostas] = useState<Resposta[]>([]);
+
   const [acertos, setAcertos] = useState(0);
 
-  const [idResultado, setIdResultado] = useState<number| null>();
+  const [idResultado, setIdResultado] = useState<number | null>();
 
   const [questAtual, setQuestAtual] = useState<Questao>(
     questionario.questoes[index],
@@ -48,14 +51,17 @@ const QuestoesCamp = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    createResultado({aluno:aluno!, questionario: questionario!, acertos:0}).then(response => {
-      setIdResultado(response.data.id);
-    }).then(() => {
-      dispatch(fetchResult(aluno?.id!));
-    }).catch(response => {
-      console.log('error:', response.message);
-      navigation.goBack();
-    });
+    createResultado({aluno: aluno!, questionario: questionario!, acertos: 0})
+      .then(response => {
+        setIdResultado(response.data.id);
+      })
+      .then(() => {
+        dispatch(fetchResult(aluno?.id!));
+      })
+      .catch(response => {
+        console.log('error:', response.message);
+        navigation.goBack();
+      });
   }, []);
 
   useEffect(() => {
@@ -69,24 +75,50 @@ const QuestoesCamp = () => {
   const showDialog = () => setVisible(!visible);
 
   const handleFinishQuest = () => {
-    updateResultado({id: idResultado!,aluno:aluno!, questionario: questionario!, acertos:acertos}).then(() => {
-      navigation.navigate('camp_resultado', {
-        acertos: acertos,
-        dificuldade: questionario.dificuldade,
-        qtdQuestoes: questionario.qtdQuestoes,
+    updateResultado({
+      id: idResultado!,
+      aluno: aluno!,
+      questionario: questionario!,
+      acertos: acertos,
+    })
+      .then(() => {
+        navigation.navigate('camp_resultado', {
+          acertos: acertos,
+          dificuldade: questionario.dificuldade,
+          qtdQuestoes: questionario.qtdQuestoes,
+        });
+      })
+      .catch(response => {
+        console.log('error:', response.message);
       });
-    }).catch(response => {
-      console.log('error:', response.message);
-    });
   };
 
   const handleResponse = () => {
+    const newRespone: Resposta = {
+      aluno: {
+        id: aluno?.id!,
+      },
+      questionario: {
+        id: questionario.id,
+      },
+      questao: {
+        id: questAtual.id,
+      },
+      opcao: {
+        id: parseFloat(valueOption),
+      },
+    };
+    setRespostas(res => [...res, newRespone]);
     if (questAtual.opcaoCorreta.id.toString() == valueOption) {
       setAcertos(acertos + 1);
     }
 
     if (index == questionario.questoes.length - 1) {
-      showDialog();
+      createRespostaEmMassa(respostas).then(() => {
+        showDialog();
+      }).catch((response) => {
+        console.log(response.message);
+      });
     } else {
       setIndex(index + 1);
     }
@@ -130,7 +162,10 @@ const QuestoesCamp = () => {
           {questAtual.artigos.length > 0 ? (
             <List.Section
               id="art"
-              style={[{borderColor: theme.colors.elevation.level5}, styles.listSecion]}>
+              style={[
+                {borderColor: theme.colors.elevation.level5},
+                styles.listSecion,
+              ]}>
               <List.Subheader style={styles.listSubHeader}>
                 Artigos
               </List.Subheader>
@@ -163,7 +198,10 @@ const QuestoesCamp = () => {
         <Dialog
           visible={visible}
           onDismiss={showDialog}
-          style={[{backgroundColor: theme.colors.background}, styles.dialogoContainer]}>
+          style={[
+            {backgroundColor: theme.colors.background},
+            styles.dialogoContainer,
+          ]}>
           <Image
             source={require('../../../assets/champagne.png')}
             style={styles.imageDialogo}
