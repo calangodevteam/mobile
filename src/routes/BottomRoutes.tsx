@@ -29,6 +29,7 @@ const BottomRoutes = () => {
             onIndexChange={setIndex}
             renderScene={renderScene}
             labeled={false}
+            theme={{colors: {secondaryContainer: 'transparent'}}}
         />
     );
 };

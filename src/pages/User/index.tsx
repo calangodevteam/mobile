@@ -35,10 +35,12 @@ const User = () => {
         title="Usuario"
         dots={[
           {
+            id:1,
             title: 'Alterar Tema',
             action: () => dispatch(toggleTheme()),
           },
           {
+            id:2,
             title: 'Sair',
             action: () =>
               SignOut()

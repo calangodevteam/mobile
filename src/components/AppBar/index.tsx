@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Appbar, Menu} from 'react-native-paper';
 
 interface itemMenu {
+  id: number,
   title: string;
-    action: () => any;
+  action: () => any;
 }
 
 interface props {
@@ -30,7 +31,7 @@ const AppBar = ({title, dots, goBack}: props) => {
           anchorPosition="bottom">
           {dots.map((item) => (
             <>
-            <Menu.Item key={item.title} title={item.title} onPress={item.action} />
+            <Menu.Item key={item.id} title={item.title} onPress={item.action} />
             </>
           ))}
         </Menu>
