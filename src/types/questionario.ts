@@ -19,7 +19,7 @@ export interface Resultado{
   id?: number;
   aluno: Aluno,
   questionario: Questionario,
-  inicio?: Date,
-  termino?: Date,
+  inicio?: string,
+  termino?: string,
   acertos: number,
 }

@@ -1,30 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {styles} from './styles';
 import {Avatar, Text} from 'react-native-paper';
 import UsuLevelCard from '../../components/UsuLevelCard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {SignOut} from '../../services/FireBaseAuth';
-import {findPontuacaoByAluno} from '../../services/ApiCalango';
-import {Pontuacao} from '../../types/aluno';
 import {View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../types/reduxHooks';
 import {signOut} from '../../redux/authSlice';
 import {toggleTheme} from '../../redux/themeSlice';
 import AppBar from '../../components/AppBar';
+import { fetchPointUsu } from '../../redux/pontuacaoSlice';
 
 const User = () => {
   const aluno = useAppSelector(state => state.auth.aluno);
+  const pontuacao = useAppSelector(state => state.pontuacao.pontuacao);
   const dispatch = useAppDispatch();
 
-  const [pontuacao, setPontuacao] = useState<Pontuacao>();
-
   useEffect(() => {
-    findPontuacaoByAluno(aluno?.id!)
-      .then(response => {
-        setPontuacao(response.data as Pontuacao);
-        console.log('response:', response.data);
-      })
-      .catch(response => {
+    dispatch(fetchPointUsu(aluno?.id!)).catch(response => {
         console.log('error:', response.message);
       });
   }, []);

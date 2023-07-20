@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
-import {AnimatedFAB, Button, useTheme} from 'react-native-paper';
+import {AnimatedFAB, Button, Text, useTheme} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
@@ -10,6 +10,9 @@ import Loading from '../../../components/Loading';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
 import { fetchResult } from '../../../redux/resultadoSlice';
 import AppBar from '../../../components/AppBar';
+import ModalResultado from '../../../components/ModalResultado';
+import { Resultado } from '../../../types/questionario';
+import { isValid } from '../../../utils/Date';
 
 const HistoricoCamp = () => {
 
@@ -24,6 +27,9 @@ const HistoricoCamp = () => {
   const navigation = useNavigation();
 
   const [isExtended, setIsExtended] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const [resultado, setResultado] = useState<Resultado>();
 
   useEffect(() => {
     setIsExtended(true);
@@ -33,6 +39,12 @@ const HistoricoCamp = () => {
   if (!loading && error !== ''){
     console.log('Error: ', error);
   }
+
+  const showModal = () => setVisible(!visible);
+
+  const handleResultado = (result: Resultado) => {
+    setResultado(result);
+  };
 
   const handleCampanha = () => {
     navigation.navigate('camp_escolha');
@@ -67,11 +79,21 @@ const HistoricoCamp = () => {
           style={styles.button}
           onPress={
             () => {
-              console.log('clicou!');
+              handleResultado(item);
+              showModal();
             }
           }
         >
-        {item.questionario.titulo}
+          <Text>
+          {`${item.questionario.titulo} `}
+          </Text>
+          <Text style={{
+            color: isValid(item.questionario.dataCriacao!, item.questionario.tempoDuracao!) === true ?
+              theme.colors.success : theme.colors.errorLight,
+            }}
+          >
+          {isValid(item.questionario.dataCriacao!, item.questionario.tempoDuracao!) === true ? ' Ativa' : ' Encerrada'}
+          </Text>
         </Button>
         )}
       />
@@ -84,6 +106,11 @@ const HistoricoCamp = () => {
         animateFrom={'right'}
         iconMode={'dynamic'}
         style={styles.fab}
+      />
+      <ModalResultado
+        visible={visible}
+        resultado={resultado}
+        onClose={() => showModal()}
       />
       {loading ? (<Loading/>) : null}
     </SafeAreaView>

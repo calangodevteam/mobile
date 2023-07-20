@@ -3,6 +3,7 @@ import { Aluno } from '../types/aluno';
 import { URL_CALANGO_API } from '@env';
 import { Resultado } from '../types/questionario';
 import { Resposta } from '../types/resposta';
+import { PageRequest } from '../types/page';
 
 const axiosInstance = axios.create({ baseURL: URL_CALANGO_API});
 
@@ -92,7 +93,18 @@ export const findPontuacaoByAluno = async (alunoId:number) => {
     return response;
 };
 
-export const findAllPontuacoes = async () => {
+export const findAllPontuacoes = async (pageble?: PageRequest) => {
+
+    if (pageble){
+
+        let sortString = '';
+        pageble.sort?.forEach( sort =>{
+            sortString += '&sort=' + sort.orderBy + ',' + sort.direction;
+        });
+        const request = `/pontuacoes?page=${pageble.page ? pageble.page : 0}&size=${pageble.size ? pageble.size : 10}${sortString}`;
+        const response = await axiosInstance.get(request);
+        return response;
+    }
 
     const response = await axiosInstance.get('/pontuacoes');
     return response;

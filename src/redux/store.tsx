@@ -10,17 +10,17 @@ import pontuacaoSlice from './pontuacaoSlice';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
+    blacklist: ['campanha','pontuacao','result'],
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authSlice);
 const persistedThemeReducer = persistReducer(persistConfig, themeSlice);
-const persistedResultReducer = persistReducer(persistConfig, resultadoSlice);
 
 const store = configureStore({
   reducer: {
     campanha: campanhaSlice,
     pontuacao: pontuacaoSlice,
-    result: persistedResultReducer,
+    result: resultadoSlice,
     auth: persistedAuthReducer,
     theme: persistedThemeReducer,
   },

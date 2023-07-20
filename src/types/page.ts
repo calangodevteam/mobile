@@ -7,3 +7,14 @@ export interface PageResponse {
     totalElements: number,
 	totalPages: number
 }
+
+export interface PageRequest {
+	page?: number,
+	size?: number,
+	sort?: Sort[],
+}
+
+interface Sort {
+	orderBy:string,
+	direction:string,
+}

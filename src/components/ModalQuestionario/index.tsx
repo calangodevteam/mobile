@@ -1,6 +1,7 @@
 import React from 'react';
 import {Badge, Button, Modal, Portal, Text, useTheme} from 'react-native-paper';
 import { styles } from './styles';
+import { AppTheme } from '../../types/theme';
 
 interface props {
   visible: boolean;
@@ -12,7 +13,7 @@ interface props {
 }
 
 const ModalQuestionario = ({visible,titulo, dificuldade, qtdQuestoes, onClose, navigate}: props) => {
-    const theme = useTheme();
+    const theme = useTheme<AppTheme>();
   return (
     <Portal>
       <Modal

@@ -8,6 +8,7 @@ interface props {
   foto: string;
   nome: string;
   nivel: number;
+  exp:number;
   ind:number
 }
 
@@ -15,7 +16,7 @@ const image = (imageUrl: string, props: any) => (
   <Avatar.Image {...props} source={{uri: imageUrl}} />
 );
 
-const RankingCard = ({foto, nome, nivel, ind}: props) => {
+const RankingCard = ({foto, nome, nivel, ind, exp}: props) => {
 
   const theme = useTheme<AppTheme>();
 
@@ -44,8 +45,8 @@ const RankingCard = ({foto, nome, nivel, ind}: props) => {
         <Card.Title
           title={nome}
           titleVariant="titleMedium"
-          subtitle={`Nivel: ${nivel}`}
-          subtitleVariant="bodyLarge"
+          subtitle={`Nivel: ${nivel} | Experiencia: ${exp}`}
+          subtitleVariant="bodyMedium"
           left={props => image(foto, props)}
         />
       </Card>

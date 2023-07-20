@@ -23,6 +23,7 @@ import {createRespostaEmMassa, createResultado, updateResultado} from '../../../
 import {useAppDispatch, useAppSelector} from '../../../types/reduxHooks';
 import {fetchResult} from '../../../redux/resultadoSlice';
 import {Resposta} from '../../../types/resposta';
+import { fetchPointUsu, fetchPoints } from '../../../redux/pontuacaoSlice';
 
 const QuestoesCamp = () => {
   const theme = useTheme<AppTheme>();
@@ -82,6 +83,8 @@ const QuestoesCamp = () => {
       acertos: acertos,
     })
       .then(() => {
+        dispatch(fetchPoints());
+        dispatch(fetchPointUsu(aluno?.id!));
         navigation.navigate('camp_resultado', {
           acertos: acertos,
           dificuldade: questionario.dificuldade,

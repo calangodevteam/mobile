@@ -22,7 +22,20 @@ const Ranking = () => {
   const loading = useAppSelector((state) => state.pontuacao.loading);
 
   useEffect(() => {
-    dispatch(fetchPoints()).catch(response => {
+    dispatch(fetchPoints({
+      page:0,
+      size:10,
+      sort:[
+        {
+          orderBy:'nivel',
+          direction:'desc',
+        },
+        {
+          orderBy:'experiencia',
+          direction:'desc',
+        },
+      ],
+    })).catch(response => {
       console.log('error:', response.message);
     });
   }, []);
@@ -50,7 +63,7 @@ const Ranking = () => {
           ) : null
         }
         renderItem={({item, index}) => (
-          <RankingCard foto={item.aluno.fotoPerfil} nome={item.aluno.nome} nivel={item.nivel} ind={(index + 1)} />
+          <RankingCard foto={item.aluno.fotoPerfil} nome={item.aluno.nome} nivel={item.nivel} ind={(index + 1)} exp={item.experiencia} />
         )}
       />
     {loading ? (<Loading/>) : null}
