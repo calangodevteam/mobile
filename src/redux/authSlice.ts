@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Aluno } from '../types/aluno';
+import { PURGE } from 'redux-persist';
 
 interface AuthSliceData {
     signed: boolean,
@@ -22,13 +23,14 @@ const authSlice = createSlice({
         state.aluno = action.payload.aluno;
         state.signed = true;
       },
-      signOut: (state) => {
-        state.aluno = null;
-        state.signed = false;
-      },
+    },
+    extraReducers: (builder) => {
+      builder.addCase(PURGE, () => {
+        return initialState;
+      });
     },
   });
 
-export const { setAluno, signIn, signOut } = authSlice.actions;
+export const { setAluno, signIn } = authSlice.actions;
 
 export default authSlice.reducer;

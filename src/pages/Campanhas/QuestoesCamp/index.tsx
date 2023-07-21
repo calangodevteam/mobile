@@ -83,7 +83,7 @@ const QuestoesCamp = () => {
       acertos: acertos,
     })
       .then(() => {
-        dispatch(fetchPoints());
+        dispatch(fetchPoints({}));
         dispatch(fetchPointUsu(aluno?.id!));
         navigation.navigate('camp_resultado', {
           acertos: acertos,

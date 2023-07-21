@@ -6,10 +6,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {SignOut} from '../../services/FireBaseAuth';
 import {View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../types/reduxHooks';
-import {signOut} from '../../redux/authSlice';
 import {toggleTheme} from '../../redux/themeSlice';
 import AppBar from '../../components/AppBar';
 import { fetchPointUsu } from '../../redux/pontuacaoSlice';
+import { persistor } from '../../redux/store';
 
 const User = () => {
   const aluno = useAppSelector(state => state.auth.aluno);
@@ -39,8 +39,9 @@ const User = () => {
               SignOut()
                 .then(() => {
                   console.log('SignOut with Google!');
-                  signOut();
-                  dispatch(signOut());
+                  persistor.purge().catch(error => {
+                    console.log('error delete AsyncStorage: ', error);
+                  });
                 })
                 .catch(error => {
                   console.log('error signOut: ', error);

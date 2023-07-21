@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { findAllPontuacoes, findPontuacaoByAluno } from '../services/ApiCalango';
 import { Pontuacao } from '../types/aluno';
-import { PageRequest } from '../types/page';
+import { PageRequest, PageResponse } from '../types/page';
+import { PURGE } from 'redux-persist';
 
 interface PontuacaoSliceData {
     loading: boolean,
     pontuacoes: Pontuacao[] | null,
+    pageResponse: PageResponse | null,
     pontuacao: Pontuacao | null;
     error:string
 }
@@ -13,22 +15,31 @@ interface PontuacaoSliceData {
 const initialState: PontuacaoSliceData = {
     loading: false,
     pontuacoes: null,
+    pageResponse: null,
     pontuacao: null,
     error: '',
 };
 
 export const fetchPoints = createAsyncThunk(
   'pontuacao/fetchPoints',
-  async (pageble:PageRequest) => {
+  async (pageble?:PageRequest) => {
     try {
-      const res = await findAllPontuacoes(pageble);
+      const res = pageble ? await findAllPontuacoes(pageble) : await findAllPontuacoes();
       const data = await res.data;
 
       if (res.data.empty){
         return null;
       }
       else {
-        return data.content as Pontuacao[];
+        const page:PageResponse = {
+          first: data.first,
+          last: data.last,
+          numberOfElements: data.numberOfElements,
+          totalElements: data.totalElements,
+          totalPages: data.totalPages,
+        };
+        const pontuacoes = data.content as Pontuacao[];
+        return {page, pontuacoes};
       }
 
     } catch (error: any) {
@@ -62,7 +73,10 @@ const pontuacaoSlice = createSlice({
       });
       builder.addCase(fetchPoints.fulfilled, (state, action) => {
         state.loading = false;
-        state.pontuacoes = action.payload;
+        if (action.payload != null){
+          state.pageResponse = action.payload.page;
+          state.pontuacoes = action.payload.page.first ? action.payload.pontuacoes : ([...state.pontuacoes!, ...action.payload.pontuacoes]);
+        }
       });
       builder.addCase(fetchPointUsu.fulfilled, (state, action) => {
         state.loading = false;
@@ -71,6 +85,9 @@ const pontuacaoSlice = createSlice({
       builder.addCase(fetchPoints.rejected || fetchPointUsu.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ? action.error.message : '';
+      });
+      builder.addCase(PURGE, () => {
+        return initialState;
       });
     },
 

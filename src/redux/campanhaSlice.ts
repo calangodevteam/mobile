@@ -1,6 +1,7 @@
 import { Questionario } from './../types/questionario';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { findQuestionariosNotAluno } from '../services/ApiCalango';
+import { PURGE } from 'redux-persist';
 
 interface QuestSliceData {
     loading: boolean,
@@ -47,6 +48,9 @@ const campanhaSlice = createSlice({
       builder.addCase(fetchCamp.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ? action.error.message : '';
+      });
+      builder.addCase(PURGE, () => {
+        return initialState;
       });
     },
 

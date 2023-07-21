@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import { styles } from './styles';
 
 interface props {
@@ -9,6 +9,10 @@ interface props {
 }
 
 const ListLoading = ({loading, size, color}:props) => {
-    return <ActivityIndicator size={size} color={color} hidesWhenStopped={true} animating={loading} style={styles.activity} />;
+    return (
+
+        loading ? <ActivityIndicator size={size} color={color} style={styles.item}/> :
+        <Text variant="bodySmall" style={[{color:color}, styles.item]}>Parece que Chegamos ao Fim...</Text>
+    );
 };
 export default ListLoading;
