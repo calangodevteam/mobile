@@ -12,7 +12,7 @@ export interface PageRequest {
 	sort?: Sort[],
 }
 
-interface Sort {
+export interface Sort {
 	orderBy:string,
 	direction:string,
 }

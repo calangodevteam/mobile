@@ -30,7 +30,7 @@ const AppBar = ({title, dots, goBack}: props) => {
           anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}
           anchorPosition="bottom">
           {dots.map((item) => (
-            <Menu.Item  key={item.id} title={item.title} onPress={item.action} />
+            <Menu.Item  key={item.id} title={item.title} onPress={() => {item.action(); closeMenu();}} />
           ))}
         </Menu>
       ) : null}

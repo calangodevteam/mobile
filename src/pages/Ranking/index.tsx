@@ -8,11 +8,12 @@ import {useAppDispatch, useAppSelector} from '../../types/reduxHooks';
 import {fetchPoints} from '../../redux/pontuacaoSlice';
 import AppBar from '../../components/AppBar';
 import ListEmpty from '../../components/ListEmpty';
-import {useTheme} from 'react-native-paper';
+import {useTheme, CheckboxItemProps} from 'react-native-paper';
 import {AppTheme} from '../../types/theme';
 import Loading from '../../components/Loading';
 import {PageRequest} from '../../types/page';
 import ListLoading from '../../components/ListLoading';
+import DialogFilter, { checkBoxInterface } from '../../components/DialogFilter';
 
 const Ranking = () => {
   const theme = useTheme<AppTheme>();
@@ -21,6 +22,24 @@ const Ranking = () => {
 
   const pontuacoes = useAppSelector(state => state.pontuacao.pontuacoes);
   const pagePontuacoes = useAppSelector(state => state.pontuacao.pageResponse);
+  const loading = useAppSelector(state => state.pontuacao.loading);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [visible, setVisible] = React.useState(false);
+
+  const [checkBox, setCheckBox] = useState<checkBoxInterface[]>([
+    {
+      title: 'nivel',
+      checked: 'checked',
+      orientation:'desc',
+    },
+    {
+      title: 'experiencia',
+      checked: 'checked',
+      orientation:'desc',
+    },
+  ]);
+
   const [pageble, setPageble] = useState<PageRequest>({
     page: 0,
     size: 2,
@@ -36,24 +55,65 @@ const Ranking = () => {
     ],
   });
 
-  const loading = useAppSelector(state => state.pontuacao.loading);
-
   useEffect(() => {
-    dispatch(
-      fetchPoints(pageble),
-    ).then(page => {
+    dispatch(fetchPoints(pageble))
+      .then(page => {
         console.log('page:', page);
       })
       .catch(response => {
         console.log('error:', response.message);
       });
+    setIsRefreshing(false);
   }, [pageble]);
+
+  const onRefresh = () => {
+    setIsRefreshing(true);
+    setPageble(prev => ({...prev, page: 0}));
+  };
+
+  const handleFilter = () => {
+    setIsRefreshing(true);
+
+    setPageble((prev) => ({
+      ...prev,
+      sort: getCheckedSortOptions(),
+      page: 0,
+    }));
+  };
+
+  const getCheckedSortOptions = () => {
+    return checkBox
+      .filter((item) => item.checked === 'checked')
+      .map((item) => ({
+        orderBy: item.title,
+        direction: item.orientation,
+      }));
+  };
 
   const fetchMoreData = () => {
     if (!pagePontuacoes?.last) {
-      setPageble(prev => ({...prev, page: pageble?.page! + 1}));
+      setPageble(prev => ({...prev, page: pageble.page! + 1}));
+      console.log('deu bom');
+    } else {
+      console.log('acabou');
     }
   };
+
+  const updateCheck = (index: number, checked:CheckboxItemProps['status']) => {
+    let newArr = [...checkBox];
+    newArr[index].checked = checked;
+    setCheckBox(newArr);
+    console.log(newArr);
+  };
+
+  const updateRadio = (index: number, orientation:checkBoxInterface['orientation']) => {
+    let newArr = [...checkBox];
+    newArr[index].orientation = orientation;
+    setCheckBox(newArr);
+    console.log(newArr);
+  };
+
+  const showDialog = () => setVisible(!visible);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +123,9 @@ const Ranking = () => {
           {
             id: 1,
             title: 'Filtrar',
-            action: () => {},
+            action: () => {
+              showDialog();
+            },
           },
         ]}
       />
@@ -71,6 +133,8 @@ const Ranking = () => {
         showsVerticalScrollIndicator={true}
         data={pontuacoes}
         keyExtractor={point => point.id.toString()}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
         ListEmptyComponent={
           !pontuacoes && loading === false ? (
             <ListEmpty
@@ -106,6 +170,16 @@ const Ranking = () => {
         }
       />
       {loading && !pagePontuacoes ? <Loading /> : null}
+      {!loading && pagePontuacoes ?
+        <DialogFilter
+          content={checkBox}
+          ok={handleFilter}
+          showDialog={showDialog}
+          title="Pontuação"
+          updateCheck={updateCheck}
+          updateRadio={updateRadio}
+          visible={visible}
+        /> : null}
     </SafeAreaView>
   );
 };
