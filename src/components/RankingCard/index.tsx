@@ -21,8 +21,8 @@ const RankingCard = ({foto, nome, nivel, ind, exp}: props) => {
   const theme = useTheme<AppTheme>();
 
   const esqCor = () => {
-    if (ind > 100){
-      return ind > 500 ? theme.colors.scoreColorBronze : theme.colors.scoreColorPrata;
+    if (ind > 1){
+      return theme.colors.scoreColorPrata;
     }
     return theme.colors.scoreColorOuro;
   };
@@ -33,7 +33,7 @@ const RankingCard = ({foto, nome, nivel, ind, exp}: props) => {
         size={46}
         label={ind.toString()}
         labelStyle={{
-          fontSize: ind > 3 ?
+          fontSize: ind > 999 ?
           theme.fonts.titleMedium.fontSize :
           theme.fonts.titleLarge.fontSize,
         }}
