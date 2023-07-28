@@ -59,9 +59,19 @@ export const findQuestionariosNotAluno = async (alunoId:number) => {
 
 // Resultado
 
-export const findResultadoByAluno = async (alunoId:number) => {
+export const findResultadoByAluno = async (alunoId:number, pageble?: PageRequest) => {
+    if (pageble){
 
-    const response = await axiosInstance.get(`/questionarios/resultados?alunoid=${alunoId}`);
+        let sortString = '';
+        pageble.sort?.forEach( sort =>{
+            sortString += '&sort=' + sort.orderBy + ',' + sort.direction;
+        });
+        const request = `/questionarios/resultados?alunoid=${alunoId}&page=${pageble.page ? pageble.page : 0}&size=${pageble.size ? pageble.size : 10}${sortString}`;
+        const response = await axiosInstance.get(request);
+        return response;
+    }
+
+    const response = await axiosInstance.get('/pontuacoes');
     return response;
 };
 

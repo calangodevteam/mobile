@@ -42,7 +42,7 @@ const Ranking = () => {
 
   const [pageble, setPageble] = useState<PageRequest>({
     page: 0,
-    size: 2,
+    size: 12,
     sort: [
       {
         orderBy: 'nivel',
@@ -132,6 +132,7 @@ const Ranking = () => {
       <FlatList
         showsVerticalScrollIndicator={true}
         data={pontuacoes}
+        style={styles.flatList}
         keyExtractor={point => point.id.toString()}
         refreshing={isRefreshing}
         onRefresh={onRefresh}

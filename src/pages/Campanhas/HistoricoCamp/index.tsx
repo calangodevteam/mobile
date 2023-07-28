@@ -13,6 +13,8 @@ import AppBar from '../../../components/AppBar';
 import ModalResultado from '../../../components/ModalResultado';
 import { Resultado } from '../../../types/questionario';
 import { isValid } from '../../../utils/Date';
+import ListLoading from '../../../components/ListLoading';
+import { PageRequest } from '../../../types/page';
 
 const HistoricoCamp = () => {
 
@@ -23,18 +25,36 @@ const HistoricoCamp = () => {
   const loading = useAppSelector((state) => state.result.loading);
   const error = useAppSelector((state) => state.result.error);
   const resultados = useAppSelector((state) => state.result.resultados);
+  const pageResultados = useAppSelector(state => state.result.pageResponse);
 
   const navigation = useNavigation();
 
-  const [isExtended, setIsExtended] = useState(false);
+  const [isExtended, setIsExtended] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [resultado, setResultado] = useState<Resultado>();
 
+  const [pageble, setPageble] = useState<PageRequest>({
+    page: 0,
+    size: 10,
+    sort: [
+      {
+        orderBy: 'termino',
+        direction: 'desc',
+      },
+    ],
+  });
+
   useEffect(() => {
-    setIsExtended(true);
-    dispatch(fetchResult(aluno?.id!));
-  }, []);
+    dispatch(fetchResult({alunoId: aluno?.id!, pageble: pageble})).then(page => {
+      console.log('page:', page);
+    })
+    .catch(response => {
+      console.log('error:', response.message);
+    });
+    setIsRefreshing(false);
+  }, [pageble]);
 
   if (!loading && error !== ''){
     console.log('Error: ', error);
@@ -50,15 +70,34 @@ const HistoricoCamp = () => {
     navigation.navigate('camp_escolha');
   };
 
+  const onRefresh = () => {
+    setIsRefreshing(true);
+    setPageble(prev => ({...prev, page: 0}));
+  };
+
+  const fetchMoreData = () => {
+    if (!pageResultados?.last) {
+      setPageble(prev => ({...prev, page: pageble.page! + 1}));
+      console.log('deu bom');
+    } else {
+      console.log('acabou');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <AppBar
         title="Histórico de Campanhas"
       />
       <FlatList
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         data={resultados}
-        keyExtractor={(resp) => resp.questionario.id.toString()}
+        style={styles.flatList}
+        onScrollEndDrag={() => {setIsExtended(true);}}
+        onScrollBeginDrag={() => {setIsExtended(false);}}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
+        keyExtractor={resp => resp.id!.toString()}
         ListEmptyComponent={
           !resultados && loading === false ? (<ListEmpty
             title="Hístico de Campanha Vazio!"
@@ -85,17 +124,28 @@ const HistoricoCamp = () => {
           }
         >
           <Text>
-          {`${item.questionario.titulo} `}
+          {`${item.questionario?.titulo} `}
           </Text>
           <Text style={{
-            color: isValid(item.questionario.dataCriacao!, item.questionario.tempoDuracao!) === true ?
+            color: isValid(item.questionario?.dataCriacao!, item.questionario?.tempoDuracao!) === true ?
               theme.colors.success : theme.colors.errorLight,
             }}
           >
-          {isValid(item.questionario.dataCriacao!, item.questionario.tempoDuracao!) === true ? ' Ativa' : ' Encerrada'}
+          {isValid(item.questionario?.dataCriacao!, item.questionario?.tempoDuracao!) === true ? ' Ativa' : ' Encerrada'}
           </Text>
         </Button>
         )}
+        onEndReachedThreshold={0.1}
+        onEndReached={fetchMoreData}
+        ListFooterComponent={
+          pageResultados ? (
+            <ListLoading
+              loading={!pageResultados.last}
+              size={'small'}
+              color={theme.colors.secondary}
+            />
+          ) : null
+        }
       />
       <AnimatedFAB
         variant="primary"
@@ -112,7 +162,7 @@ const HistoricoCamp = () => {
         resultado={resultado}
         onClose={() => showModal()}
       />
-      {loading ? (<Loading/>) : null}
+      {loading && !pageResultados ? (<Loading/>) : null}
     </SafeAreaView>
   );
 };

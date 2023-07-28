@@ -34,6 +34,7 @@ const BottomRoutes = () => {
             renderScene={renderScene}
             labeled={false}
             theme={{colors: {secondaryContainer: 'transparent'}}}
+            keyboardHidesNavigationBar={true}
             sceneAnimationEnabled={false}
         />
     );

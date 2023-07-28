@@ -7,12 +7,24 @@ import {
   MD3DarkTheme,
   MD3LightTheme,
   adaptNavigationTheme,
+  configureFonts,
 } from 'react-native-paper';
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
   reactNavigationDark: NavigationDarkTheme,
 });
+
+const customVariants = {
+
+  lilitaOne: {
+    fontFamily: 'LilitaOne-Regular',
+    fontWeight: '400',
+    letterSpacing: 0.5,
+    lineHeight: 22,
+    fontSize: 24,
+  },
+} as const;
 
 export const defaultTheme = {
   ...MD3LightTheme,
@@ -30,6 +42,8 @@ export const defaultTheme = {
     scoreColorPrata:'#c0c0c0',
     scoreColorOuro:'#ffd700',
   },
+
+  fonts: configureFonts({config: customVariants}),
 
 };
 
@@ -49,4 +63,6 @@ export const darkTheme = {
     scoreColorPrata:'#c0c0c0',
     scoreColorOuro:'#ffd700',
   },
+
+  fonts: configureFonts({config: customVariants}),
 };

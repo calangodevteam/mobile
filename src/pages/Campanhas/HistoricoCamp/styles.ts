@@ -18,4 +18,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height:45,
   },
+  flatList: {
+    marginTop:20,
+  },
 });

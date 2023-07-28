@@ -22,20 +22,27 @@ const RankingCard = ({foto, nome, nivel, ind, exp}: props) => {
 
   const esqCor = () => {
     if (ind > 1){
-      return theme.colors.scoreColorPrata;
+      return theme.colors.primary;
     }
     return theme.colors.scoreColorOuro;
+  };
+
+  const esqSize = () => {
+    if (ind > 999){
+      return ind > 9999 ? 12 : 16;
+    }
+    return ind > 99 ? 20 : 28;
   };
 
   return (
     <View style={styles.container}>
       <Avatar.Text
-        size={46}
+        size={38}
         label={ind.toString()}
+        color={theme.colors.onPrimary}
         labelStyle={{
-          fontSize: ind > 999 ?
-          theme.fonts.titleMedium.fontSize :
-          theme.fonts.titleLarge.fontSize,
+          fontSize: esqSize(),
+          fontFamily:theme.fonts.lilitaOne.fontFamily,
         }}
         style={{
           backgroundColor: esqCor(),
