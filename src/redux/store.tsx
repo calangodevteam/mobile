@@ -6,11 +6,12 @@ import themeSlice from './themeSlice';
 import campanhaSlice from './campanhaSlice';
 import resultadoSlice from './resultadoSlice';
 import pontuacaoSlice from './pontuacaoSlice';
+import bottomNav from './bottomNav';
 
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['campanha','pontuacao','result'],
+    blacklist: ['campanha','pontuacao','result', 'bottomNav'],
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authSlice);
@@ -21,6 +22,7 @@ const store = configureStore({
     campanha: campanhaSlice,
     pontuacao: pontuacaoSlice,
     result: resultadoSlice,
+    bottomNav: bottomNav,
     auth: persistedAuthReducer,
     theme: persistedThemeReducer,
   },

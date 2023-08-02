@@ -5,11 +5,13 @@ import Ranking from '../pages/Ranking';
 import HistoricoCamp from '../pages/Campanhas/HistoricoCamp';
 import Notificacao from '../pages/Notificacao';
 import { AppTheme } from '../types/theme';
+import { useAppSelector } from '../types/reduxHooks';
 
 const BottomRoutes = () => {
 
     const [index, setIndex] = useState(0);
     const theme = useTheme<AppTheme>();
+    const visible = useAppSelector((state) => state.bottomNav.visible);
 
     const [routes] = useState([
       { key: 'campanhas',title: 'Campanhas', focusedIcon: 'book-edit'},
@@ -36,6 +38,7 @@ const BottomRoutes = () => {
             theme={{colors: {secondaryContainer: 'transparent'}}}
             keyboardHidesNavigationBar={true}
             sceneAnimationEnabled={false}
+            barStyle={{display:visible ? 'flex' : 'none'}}
         />
     );
 };
