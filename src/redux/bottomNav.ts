@@ -18,7 +18,7 @@ const initialState: BottomNavData = {
 };
 
 const bottomNav = createSlice({
-    name: 'auth',
+    name: 'bottomNav',
     initialState,
     reducers: {
       ocultarBottom:  (state) => {
