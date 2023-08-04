@@ -11,6 +11,8 @@ import { AppTheme } from '../../../types/theme';
 import Loading from '../../../components/Loading';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxHooks';
 import { fetchCamp } from '../../../redux/campanhaSlice';
+import { PageRequest } from '../../../types/page';
+import ListLoading from '../../../components/ListLoading';
 
 const EscolhaCamp = () => {
 
@@ -22,13 +24,32 @@ const EscolhaCamp = () => {
   const loading = useAppSelector((state) => state.campanha.loading);
   const error = useAppSelector((state) => state.campanha.error);
   const campanhas = useAppSelector((state) => state.campanha.campanhas);
+  const pageCampanhas = useAppSelector(state => state.campanha.pageResponse);
 
   const [visible, setVisible] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [campanha, setCampanha] = useState<Questionario>();
 
+  const [pageble, setPageble] = useState<PageRequest>({
+    page: 0,
+    size: 10,
+    sort: [
+      {
+        orderBy: 'dataCriacao',
+        direction: 'desc',
+      },
+    ],
+  });
+
   useEffect(() => {
-    dispatch(fetchCamp(aluno?.id!));
-  }, [aluno, dispatch]);
+    dispatch(fetchCamp({alunoId: aluno?.id!, pageble: pageble})).then(page => {
+      console.log('page:', page);
+    })
+    .catch(response => {
+      console.log('error:', response.message);
+    });
+    setIsRefreshing(false);
+  }, [pageble]);
 
   if (!loading && error !== ''){
     console.log('Error: ', error);
@@ -42,13 +63,28 @@ const EscolhaCamp = () => {
 
   const showModal = () => setVisible(!visible);
 
+  const onRefresh = () => {
+    setIsRefreshing(true);
+    setPageble(prev => ({...prev, page: 0}));
+  };
+
+  const fetchMoreData = () => {
+    if (!pageCampanhas?.last) {
+      setPageble(prev => ({...prev, page: pageble.page! + 1}));
+      console.log('deu bom');
+    } else {
+      console.log('acabou');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text variant="titleLarge" style={styles.text}>Campanhas Disponiveis para você</Text>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={campanhas}
-        refreshing={loading}
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
         keyExtractor={(camp) => camp.id!.toString()}
         ListEmptyComponent={
           !campanhas && loading === false ? (<ListEmpty
@@ -78,6 +114,17 @@ const EscolhaCamp = () => {
         {item.titulo}
         </Button>
         )}
+        onEndReachedThreshold={0.1}
+        onEndReached={fetchMoreData}
+        ListFooterComponent={
+          pageCampanhas?.empty === false ? (
+            <ListLoading
+              loading={!pageCampanhas.last}
+              size={'small'}
+              color={theme.colors.secondary}
+            />
+          ) : null
+        }
       />
       <ModalQuestionario
         visible={visible}
@@ -87,7 +134,7 @@ const EscolhaCamp = () => {
         onClose={() => showModal()}
         navigate={handleConfirm}
       />
-      {loading ? (<Loading/>) : null}
+      {loading && !pageCampanhas ? (<Loading/>) : null}
     </SafeAreaView>
   );
 };

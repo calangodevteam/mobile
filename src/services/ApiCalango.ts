@@ -51,7 +51,18 @@ export const findQuestionarios = async () => {
     return response;
 };
 
-export const findQuestionariosNotAluno = async (alunoId:number) => {
+export const findQuestionariosNotAluno = async (alunoId:number, pageble?: PageRequest) => {
+
+    if (pageble){
+
+        let sortString = '';
+        pageble.sort?.forEach( sort =>{
+            sortString += '&sort=' + sort.orderBy + ',' + sort.direction;
+        });
+        const request = `/questionarios/page?alunoid=${alunoId}&page=${pageble.page ? pageble.page : 0}&size=${pageble.size ? pageble.size : 10}${sortString}`;
+        const response = await axiosInstance.get(request);
+        return response;
+    }
 
     const response = await axiosInstance.get(`/questionarios/page?alunoid=${alunoId}`);
     return response;

@@ -161,7 +161,7 @@ const Ranking = () => {
         onEndReachedThreshold={0.1}
         onEndReached={fetchMoreData}
         ListFooterComponent={
-          pagePontuacoes ? (
+          pagePontuacoes?.empty === false ?  (
             <ListLoading
               loading={!pagePontuacoes.last}
               size={'small'}

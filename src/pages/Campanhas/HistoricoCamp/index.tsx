@@ -138,7 +138,7 @@ const HistoricoCamp = () => {
         onEndReachedThreshold={0.1}
         onEndReached={fetchMoreData}
         ListFooterComponent={
-          pageResultados ? (
+          pageResultados?.empty === false ? (
             <ListLoading
               loading={!pageResultados.last}
               size={'small'}

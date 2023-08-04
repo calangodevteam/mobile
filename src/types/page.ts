@@ -1,9 +1,10 @@
 export interface PageResponse {
 	first: boolean,
 	last: boolean,
+	empty: boolean,
 	numberOfElements: number,
     totalElements: number,
-	totalPages: number
+	totalPages: number,
 }
 
 export interface PageRequest {
