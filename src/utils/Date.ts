@@ -28,5 +28,5 @@ export const isValid = (dateIni: string, tempo:number) => {
   const newDate = new Date();
   const differenceInMilliseconds: number = Math.abs(newDate.getTime() - date1.getTime());
   const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
-  return differenceInMinutes < tempo ? true : false;
+  return differenceInMinutes < tempo;
 };
