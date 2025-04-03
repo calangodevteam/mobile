@@ -85,7 +85,7 @@ const Cadastro = () => {
       : findCep(cep)
           .then(({data}) => {
             createAluno({ nome: user?.displayName!, email: user?.email!, fotoPerfil: user?.photoURL!,
-              endereco: { cep: data.code, estado: data.state, cidade: data.city, bairro: data.district, rua: data.address},
+              endereco: { cep: data.cep, estado: data.estado, cidade: data.localidade, bairro: data.bairro, rua: data.logadouro},
               cursosUnidade: {id: curso},
             })
               .then(response => {
